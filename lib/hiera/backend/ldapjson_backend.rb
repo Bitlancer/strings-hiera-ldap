@@ -1,3 +1,5 @@
+require 'hiera/config'
+
 class Hiera
   module Backend
     class Ldapjson_backend
