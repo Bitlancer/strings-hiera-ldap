@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.name        = 'hiera-ldap-json-backend'
-  s.version     = '0.0.0'
-  s.date        = '2013-05-04'
+  s.version     = '0.0.1'
+  s.date        = '2013-09-18'
   s.summary     = "A hiera backend for json in ldap"
   s.description = "A hiera backend for json in ldap"
   s.authors     = ["Edmund Jorgensen"]

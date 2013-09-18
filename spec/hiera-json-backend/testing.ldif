@@ -1,0 +1,60 @@
+version: 1
+
+dn: ou=people,dc=example,dc=org
+objectClass: top
+objectClass: organizationalUnit
+ou: people
+
+dn: uid=aa729,ou=people,dc=example,dc=org
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+cn: Alexandra Adams
+sn: Adams
+givenName: Alexandra
+mail: alexandra@example.org
+uid: aa729
+# Password is "smada"
+userpassword: {SHA}pGlmZX1VOEdHHb30HZezeVNFxGM=
+
+dn: ou=hiera,dc=example,dc=org
+objectClass: organizationalUnit
+ou: hiera
+
+dn: cn=easy,ou=hiera,dc=example,dc=org
+objectClass: domain
+objectClass: extensibleObject
+dc: easy
+description: {"testkey": "test value one", "otherkey": "test value two"}
+
+dn: cn=second,ou=hiera,dc=example,dc=org
+objectClass: domain
+objectClass: extensibleObject
+dc: second
+description: {"testkey": "another tv1", "otherkey": "test value two"}
+
+dn: cn=multattrs,ou=hiera,dc=example,dc=org
+objectClass: domain
+objectClass: extensibleObject
+dc: multattrs
+description: {"testkey": "another tv1", "otherkey": "test value two"}
+description: {"testkey": "hahhd", "otherkey": "test value two"}
+
+dn: ou=hiera,dc=example,dc=org
+objectClass: organizationalUnit
+ou: hiera
+
+dn: ou=triple,ou=hiera,dc=example,dc=org
+objectClass: organizationalUnit
+ou: triple
+
+dn: ou=nested,ou=triple,ou=hiera,dc=example,dc=org
+objectClass: organizationalUnit
+ou: nested
+
+dn: cn=source,ou=nested,ou=triple,ou=hiera,dc=example,dc=org
+objectClass: domain
+objectClass: extensibleObject
+dc: source
+description: {"testkey": "nested testkey", "otherkey": "test value two"}

@@ -5,8 +5,22 @@ Bitlancer Strings LDAP backend for hiera
 ## In a Nutshell
 
 Provides a new hiera backend, "ldapjson", which can be configured to
-pull json from ldap and then query it in the same manner as the normal
-json backend.
+query ldap for a json hash and then lookup a key in the json.
+
+## Installation
+
+The only dep for running should be net-ldap, installable with:
+
+```gem install net-ldap```
+
+You can build a local gem of the backend with
+
+```gem build hiera-ldap-json-backend.gemspec```
+
+And then install the resulting gem.
+
+Running the rspec tests requires a JVM (for the in-memory ldap server)
+and gems for rspec, mocha, and ladle.
 
 ## Configuration
 
@@ -21,6 +35,8 @@ Example configuration:
 
 :hierarchy:
   - common
+  - "datacenter/%{::home}"
+  - silly/example/here
 
 :ldapjson:
    :ldap_host: 'localhost'
@@ -28,45 +44,75 @@ Example configuration:
    :ldap_base: 'dc=testing,dc=com'
    :ldap_bind_dn: 'cn=Manager,dc=testing,dc=com'
    :ldap_bind_password: 'password'
-   :ldap_filter: '(objectclass=domain)'
    :ldap_attr: 'description'
+   :hiera_base_ou: 'ou=myhiera'
 ```
-
-The ldap_filter value can (and should) have interpolated scope values
-in it (e.g. ```%{env}``` or ```%{location}```), as these values will
-be filled in from the scope of the query.  For convenience, the
-```%{key}``` value is also interpolated in the ldap_filter.
 
 All ldapjson fields are required.
 
-## Query Handling
+## Source Hierarchy to LDAP Translation
 
-Query handling is pretty much the same as the normal json backend,
-with one added wrinkle: whereas the json backend will merge multiple
-json files and json arrays on an array or hash query, the ldap json
-backend will merge multiple entries returned from an ldap search, json
-arrays, **and** multiple values for the target attr in each of those
-entries.  In other words, if you had, using the above (kind of
-nonsense) configuration, two entries in ldap:
+A source in the hierarchy is translated to an ldap search with the
+following rules:
+
+1. the source is split on "/" (e.g., "test/this/now" becomes ["test",
+"this", "now"]
+
+2. the last entry in the split source is treated as a cn, all others
+as ous in reverse order (e.g. "test/this/now" becomes
+"cn=now,ou=this,ou=test")
+
+3. the hiera_base_ou config value is appended with a comma (e.g.,
+"cn=now,ou=this,ou=test" becomes "cn=now,ou=this,ou=test,ou=myhiera")
+
+4. the ldap_base config value is appended with a comma (e.g.,
+"cn=now,ou=this,ou=test,ou=myhiera" becomes
+"cn=now,ou=this,ou=test,ou=myhiera,dc=testing,dc=com")
+
+5. The ldap entry with the resulting dn is then looked up.
+
+Interpolations of variables work as usual.
+
+## Hash Queries
+
+Are not supported
+
+## Query Example (using the above config)
 
 ```
-dn: cn=ewj,dc=testing,dc=com
+dn: cn=common,ou=myhiera,dc=testing,dc=com
 objectClass: domain
 objectClass: extensibleObject
-dc: hi
+dc: common
 description: {"testkey": "test value one"}
 
-dn: cn=ewj2,dc=testing,dc=com
+dn: cn=here,ou=example,ou=silly,ou=myhiera,dc=testing,dc=com
 objectClass: domain
 objectClass: extensibleObject
-dc: hi2
-description: {"testkey": "test value two"}
-description: {"testkey": ["test value three", "test value four"]}
+dc: common
+description: {"testkey": "test value two", "other": "one"}
 ```
 
-and you ran
+Then
+
+```hiera testkey```
+
+Would get you:
+
+"test value one"
+
+And
 
 ```hiera -a testkey```
 
-You'd get back all four of "test value one", "test value two", "test
-value three", and "test value four".
+Would get you:
+
+["test value two"]
+
+While
+
+```hiera other```
+
+would get you:
+
+"one"

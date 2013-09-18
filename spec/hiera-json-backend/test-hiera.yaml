@@ -1,0 +1,9 @@
+---
+:ldapjson:
+   :ldap_host: 'localhost'
+   :ldap_port: 3897
+   :ldap_base: 'dc=example,dc=org'
+   :ldap_bind_dn: 'uid=aa729,ou=people,dc=example,dc=org'
+   :ldap_bind_password: 'smada'
+   :hiera_base_ou: 'ou=hiera'
+   :ldap_attr: 'description'

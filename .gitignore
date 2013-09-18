@@ -3,3 +3,4 @@ Vagrantfile
 install_deps.sh
 .vagrant
 tmp
+*.gem
