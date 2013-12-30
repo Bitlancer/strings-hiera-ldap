@@ -1,6 +1,6 @@
 *~
 Vagrantfile
 install_deps.sh
-.vagrant
+.vagrant*
 tmp
 *.gem
