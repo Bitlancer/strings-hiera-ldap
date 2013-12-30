@@ -34,6 +34,18 @@ objectClass: extensibleObject
 dc: second
 description: {"testkey": "another tv1", "otherkey": "test value two"}
 
+dn: cn=easy2,ou=hiera,dc=example,dc=org
+objectClass: domain
+objectClass: extensibleObject
+dc: easy2
+description: {"testkey": {"somekey": "test value two"}}
+
+dn: cn=second2,ou=hiera,dc=example,dc=org
+objectClass: domain
+objectClass: extensibleObject
+dc: second2
+description: {"testkey": {"otherkey": "hi"}}
+
 dn: cn=multattrs,ou=hiera,dc=example,dc=org
 objectClass: domain
 objectClass: extensibleObject

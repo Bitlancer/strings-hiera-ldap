@@ -95,7 +95,9 @@ class Hiera
                 Hiera.debug("Merging new answer to array.")
                 answer << new_answer
               when :hash
-                raise Exception, "hash is not supported"
+                raise Exception, "Hiera type mismatch: expected Hash and got #{new_answer.class}" unless new_answer.kind_of? Hash
+                answer ||= {}
+                answer = Backend.merge_answer(new_answer,answer)
               else
                 # priority search...return after first item.
                 Hiera.debug("Found answer, breaking.")

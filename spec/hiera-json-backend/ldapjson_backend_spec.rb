@@ -68,15 +68,14 @@ class Hiera
                                              "another tv1"])
         end
 
-        it "should not support hash searches" do
-          Backend.expects(:datasources).multiple_yields(["easy"],
-                                                        ["second"])
-          expect {
+        it "should support hash searches" do
+          Backend.expects(:datasources).multiple_yields(["easy2"],
+                                                        ["second2"])
             @backend.lookup("testkey",
                             {},
                             nil,
-                            :hash)
-          }.to raise_error
+                            :hash).should eq({"somekey" => "test value two",
+                                              "otherkey" => "hi"})
         end
 
         it "should return nil on priority no such key" do
