@@ -75,7 +75,7 @@ Interpolations of variables work as usual.
 
 ## Hash Queries
 
-Are not supported
+Are supported.
 
 ## Query Example (using the above config)
 
