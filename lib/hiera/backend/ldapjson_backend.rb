@@ -56,6 +56,7 @@ class Hiera
                            hiera_base_ou,
                            ldap_base].join(",")
 
+            Hiera.debug("Searching #{search_base} for all entities with the #{ldap_attr} attribute")
             conn.search(:base => search_base,
                         :scope => Net::LDAP::SearchScope_BaseObject,
                         :attributes => ldap_attr) do |entry|
