@@ -73,6 +73,7 @@ class Hiera
               end
 
               json_data = attrs[0]
+              Hiera.debug("Raw data from ldap: #{json_data}")
 
               if json_data.nil? or json_data.empty?
                 Hiera.debug("No json data in attr, skipping.")
