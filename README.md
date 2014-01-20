@@ -19,7 +19,7 @@ You can build a local gem of the backend with
 
 And then install the resulting gem
 
-```gem install hiera-ldap-0.0.1.gem```
+```gem install hiera-ldap-json-backend-0.0.1.gem```
 
 Running the rspec tests requires a JVM (for the in-memory ldap server)
 and gems for rspec, mocha, and ladle.
